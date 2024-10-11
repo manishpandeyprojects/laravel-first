@@ -1,14 +1,31 @@
 @extends('layout.app')
 
 @section('hero-banner')
-<a href="{{route('blogs.create')}}">Create Blog</a>
+<section class="blog-listing">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Blog Listings</h1>
+        <a href="{{ route('blogs.create') }}" class="btn btn-primary">Create Blog</a>
+    </div>
 
-@if(session()->has('message'))
-{{session()->get('message')}}
-@endif
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
 
-@foreach($blogs as $blog)
-<h2>{{$blog->name}}</h2>
-<p>{{$blog->description}} created by: {{$blog->user->name}} <a href="{{route('blogs.show', $blog)}}">Show</a> </p>
-@endforeach
-@endsection()
+    <div class="row">
+        @foreach($blogs as $blog)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $blog->name }}</h5>
+                        <p class="card-text">{{ Str::limit($blog->description, 100) }}</p>
+                        <p class="card-text"><small class="text-muted">Created by: {{ $blog->user->name }}</small></p>
+                        <a href="{{ route('blogs.show', $blog) }}" class="btn btn-info">Show</a>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</section>
+@endsection
